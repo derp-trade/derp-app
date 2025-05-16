@@ -8,6 +8,6 @@ export function useMarketStatus() {
     queryFn: async () => {
       return getMarketStatus();
     },
-    refetchInterval: 10 * 1000,
+    refetchInterval: 30 * 1000,
   });
 }

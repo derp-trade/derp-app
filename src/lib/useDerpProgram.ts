@@ -1,12 +1,15 @@
 import { DerpContracts } from "@/idl/derp_contracts";
 import idl from '@/idl/derp_contracts.json';
 import * as anchor from '@coral-xyz/anchor';
+import { Provider } from "@reown/appkit-adapter-solana/react";
+import { useAppKitProvider } from "@reown/appkit/react";
 import { PublicKey } from '@solana/web3.js';
 import BN from "bn.js";
 import { useMemo } from 'react';
 import { DERP_STATE_ID, MarketId, markets } from "./const";
 import { ReadOnlyWallet } from "./read-only-wallet";
 import { solanaConnection } from "./solana-config";
+import { useBalance } from "./useBalance";
 
 export const DERP_PROGRAM_ID = new PublicKey(idl.address);
 
@@ -20,12 +23,53 @@ interface MarketStatusResponse {
   }[];
 }
 
+export function useWallet(): {
+  wallet: anchor.Wallet;
+  isReadOnly: boolean;
+} {
+  const { walletProvider } = useAppKitProvider<Provider>("solana");
+
+  const balance = useBalance();
+  const balanceCorrect = !!balance && balance.symbol === "SOL" && !!Number(balance.balance);
+  const walletExists = !!walletProvider && !!walletProvider.publicKey;
+
+  const wallet = useMemo(() => {
+    if (!balanceCorrect || !walletExists) {
+      return new ReadOnlyWallet();
+    }
+
+    const wallet: anchor.Wallet = {
+      publicKey: walletProvider!.publicKey!,
+      signTransaction: async (transaction) => {
+        if (!walletProvider) {
+          throw new Error("Wallet not connected");
+        }
+        return walletProvider.signTransaction(transaction);
+      },
+      signAllTransactions: async (transactions) => {
+        if (!walletProvider) {
+          throw new Error("Wallet not connected");
+        }
+        return walletProvider.signAllTransactions(transactions);
+      },
+      payer: undefined as unknown as anchor.web3.Keypair,
+    };
+
+    return wallet;
+  }, [walletProvider, balanceCorrect, walletExists]);
+
+  return {
+    wallet,
+    isReadOnly: !balanceCorrect || !walletExists,
+  };
+}
+
 export function useDerpProgram() {
-  // const { walletProvider } = useAppKitProvider<Provider>("solana");
+  const { wallet } = useWallet();
 
   const provider = useMemo(
-    () => new anchor.AnchorProvider(solanaConnection, new ReadOnlyWallet(), { commitment: 'confirmed', preflightCommitment: 'confirmed' }),
-    [],
+    () => new anchor.AnchorProvider(solanaConnection, wallet, { commitment: 'confirmed', preflightCommitment: 'confirmed' }),
+    [wallet],
   );
 
   return useMemo(() => new anchor.Program<DerpContracts>(idl, provider), [provider]);
@@ -33,11 +77,11 @@ export function useDerpProgram() {
 
 export function useDerpFunctions() {
   const program = useDerpProgram();
-  const wallet = new ReadOnlyWallet();
+  const { wallet, isReadOnly } = useWallet();
 
   const createUserAccount = useMemo(() => {
     return async () => {
-      if (!wallet) {
+      if (isReadOnly) {
         throw new Error("Wallet not connected");
       }
 
@@ -49,11 +93,11 @@ export function useDerpFunctions() {
 
       return tx;
     };
-  }, [program, wallet]);
+  }, [program, wallet, isReadOnly]);
 
   const openPosition = useMemo(() => {
     return async (marketId: MarketId, size: BN, leverage: number) => {
-      if (!wallet) {
+      if (isReadOnly) {
         throw new Error("Wallet not connected");
       }
 
@@ -69,11 +113,11 @@ export function useDerpFunctions() {
 
       return tx;
     };
-  }, [program, wallet]);
+  }, [program, wallet, isReadOnly]);
 
   const closePosition = useMemo(() => {
     return async (marketId: MarketId) => {
-      if (!wallet) {
+      if (isReadOnly) {
         throw new Error("Wallet not connected");
       }
 
@@ -89,11 +133,11 @@ export function useDerpFunctions() {
 
       return tx;
     };
-  }, [program, wallet]);
+  }, [program, wallet, isReadOnly]);
 
   const getUserStatus = useMemo(() => {
     return async () => {
-      if (!wallet) {
+      if (isReadOnly) {
         throw new Error("Wallet not connected");
       }
 
@@ -111,7 +155,7 @@ export function useDerpFunctions() {
 
       return "";
     };
-  }, [program, wallet]);
+  }, [program, wallet, isReadOnly]);
 
   const getMarketStatus = useMemo(() => {
     return async () => {
