@@ -1,3 +1,6 @@
+"use client";
+
+import MarketBar from "@/components/market-bar";
 import Navbar from "@/components/navbar";
 import PositionsList from "@/components/positions-list";
 import RecentTrades from "@/components/recent-trades";
@@ -9,6 +12,8 @@ export default function Home() {
   return (
     <div className="flex flex-col items-stretch justify-center min-h-screen p-4 gap-2 font-[family-name:var(--font-geist-sans)]">
       <Navbar />
+
+      <MarketBar />
 
       <div className="flex flex-1 flex-row justify-center items-stretch gap-2">
         <div className="flex-1 flex flex-col items-center justify-center gap-2">
