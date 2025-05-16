@@ -1,0 +1,904 @@
+{
+  "address": "GZeLk7wqD1MUk2ELdMw4KskogNQsckoVqCTCbepxT1h3",
+  "metadata": {
+    "name": "derp_contracts",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "apply_funding",
+      "discriminator": [
+        199,
+        170,
+        102,
+        61,
+        252,
+        86,
+        228,
+        184
+      ],
+      "accounts": [
+        {
+          "name": "derp_state",
+          "writable": true
+        },
+        {
+          "name": "user_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "pyth_price_account"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "calculate_funding",
+      "discriminator": [
+        109,
+        126,
+        133,
+        200,
+        231,
+        48,
+        227,
+        128
+      ],
+      "accounts": [
+        {
+          "name": "derp_state",
+          "writable": true
+        },
+        {
+          "name": "admin",
+          "signer": true
+        },
+        {
+          "name": "clock",
+          "address": "SysvarC1ock11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "close_position",
+      "discriminator": [
+        123,
+        134,
+        81,
+        0,
+        49,
+        68,
+        98,
+        98
+      ],
+      "accounts": [
+        {
+          "name": "derp_state",
+          "writable": true
+        },
+        {
+          "name": "user_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "pyth_price_account"
+        }
+      ],
+      "args": [
+        {
+          "name": "asset_type",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "create_user_account",
+      "discriminator": [
+        146,
+        68,
+        100,
+        69,
+        63,
+        46,
+        182,
+        199
+      ],
+      "accounts": [
+        {
+          "name": "user_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "get_market_status",
+      "discriminator": [
+        51,
+        68,
+        212,
+        8,
+        4,
+        23,
+        221,
+        91
+      ],
+      "accounts": [
+        {
+          "name": "derp_state"
+        },
+        {
+          "name": "pyth_price_account_gold"
+        },
+        {
+          "name": "pyth_price_account_sol"
+        },
+        {
+          "name": "pyth_price_account_fartcoin"
+        },
+        {
+          "name": "clock",
+          "address": "SysvarC1ock11111111111111111111111111111111"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "MarketSnapshots"
+        }
+      }
+    },
+    {
+      "name": "get_user_status",
+      "discriminator": [
+        219,
+        123,
+        153,
+        80,
+        255,
+        159,
+        164,
+        155
+      ],
+      "accounts": [
+        {
+          "name": "derp_state"
+        },
+        {
+          "name": "user_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "pyth_price_account_gold"
+        },
+        {
+          "name": "pyth_price_account_sol"
+        },
+        {
+          "name": "pyth_price_account_fartcoin"
+        },
+        {
+          "name": "clock",
+          "address": "SysvarC1ock11111111111111111111111111111111"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "UserSnapshot"
+        }
+      }
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "derp_state",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "gold_pyth_account",
+          "type": "pubkey"
+        },
+        {
+          "name": "sol_pyth_account",
+          "type": "pubkey"
+        },
+        {
+          "name": "fartcoin_pyth_account",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "open_position",
+      "discriminator": [
+        135,
+        128,
+        47,
+        77,
+        15,
+        152,
+        240,
+        49
+      ],
+      "accounts": [
+        {
+          "name": "derp_state",
+          "writable": true
+        },
+        {
+          "name": "user_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  45,
+                  97,
+                  99,
+                  99,
+                  111,
+                  117,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "pyth_price_account"
+        }
+      ],
+      "args": [
+        {
+          "name": "asset_type",
+          "type": "u8"
+        },
+        {
+          "name": "size",
+          "type": "i64"
+        },
+        {
+          "name": "leverage",
+          "type": "u8"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "DerpState",
+      "discriminator": [
+        116,
+        203,
+        242,
+        29,
+        75,
+        238,
+        45,
+        113
+      ]
+    },
+    {
+      "name": "PriceUpdateV2",
+      "discriminator": [
+        34,
+        241,
+        35,
+        99,
+        157,
+        126,
+        244,
+        205
+      ]
+    },
+    {
+      "name": "UserAccount",
+      "discriminator": [
+        211,
+        33,
+        136,
+        16,
+        186,
+        110,
+        242,
+        127
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "UnauthorizedAccess",
+      "msg": "Unauthorized access"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidAssetType",
+      "msg": "Invalid asset type"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidPositionSize",
+      "msg": "Invalid position size"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidLeverage",
+      "msg": "Invalid leverage"
+    },
+    {
+      "code": 6004,
+      "name": "InsufficientBalance",
+      "msg": "Insufficient balance"
+    },
+    {
+      "code": 6005,
+      "name": "PositionAlreadyExists",
+      "msg": "Position already exists"
+    },
+    {
+      "code": 6006,
+      "name": "NoPositionExists",
+      "msg": "No position exists to close"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidOracleAccount",
+      "msg": "Invalid oracle account"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidOraclePrice",
+      "msg": "Invalid oracle price"
+    },
+    {
+      "code": 6009,
+      "name": "MathOverflow",
+      "msg": "Math overflow"
+    }
+  ],
+  "types": [
+    {
+      "name": "DerpState",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "pubkey"
+          },
+          {
+            "name": "markets",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "MarketInfo"
+                  }
+                },
+                3
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "asset_type",
+            "type": "u8"
+          },
+          {
+            "name": "pyth_price_account",
+            "type": "pubkey"
+          },
+          {
+            "name": "skew",
+            "type": "i64"
+          },
+          {
+            "name": "total_long_size",
+            "type": "u64"
+          },
+          {
+            "name": "total_short_size",
+            "type": "u64"
+          },
+          {
+            "name": "last_funding_time",
+            "type": "i64"
+          },
+          {
+            "name": "global_funding_index",
+            "type": "i128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketSnapshot",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "current_price_oracle",
+            "type": "u64"
+          },
+          {
+            "name": "current_price_amm",
+            "type": "u64"
+          },
+          {
+            "name": "funding_index",
+            "type": "i128"
+          },
+          {
+            "name": "funding_rate",
+            "type": "i64"
+          },
+          {
+            "name": "last_funding_time",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketSnapshots",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market_snapshots",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "MarketSnapshot"
+                  }
+                },
+                3
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Position",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "size",
+            "type": "i64"
+          },
+          {
+            "name": "entry_price",
+            "type": "u64"
+          },
+          {
+            "name": "leverage",
+            "type": "u8"
+          },
+          {
+            "name": "last_funding_index",
+            "type": "i128"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PositionStatus",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "size",
+            "type": "i64"
+          },
+          {
+            "name": "entry_price",
+            "type": "u64"
+          },
+          {
+            "name": "current_price_oracle",
+            "type": "u64"
+          },
+          {
+            "name": "current_price_amm",
+            "type": "u64"
+          },
+          {
+            "name": "unrealized_pnl",
+            "type": "i64"
+          },
+          {
+            "name": "initial_margin",
+            "type": "u64"
+          },
+          {
+            "name": "maintenance_margin",
+            "type": "u64"
+          },
+          {
+            "name": "claimable_value",
+            "type": "i64"
+          },
+          {
+            "name": "funding_index",
+            "type": "i128"
+          },
+          {
+            "name": "funding_rate",
+            "type": "i64"
+          },
+          {
+            "name": "last_funding_time",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PriceFeedMessage",
+      "repr": {
+        "kind": "c"
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "feed_id",
+            "docs": [
+              "`FeedId` but avoid the type alias because of compatibility issues with Anchor's `idl-build` feature."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "price",
+            "type": "i64"
+          },
+          {
+            "name": "conf",
+            "type": "u64"
+          },
+          {
+            "name": "exponent",
+            "type": "i32"
+          },
+          {
+            "name": "publish_time",
+            "docs": [
+              "The timestamp of this price update in seconds"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "prev_publish_time",
+            "docs": [
+              "The timestamp of the previous price update. This field is intended to allow users to",
+              "identify the single unique price update for any moment in time:",
+              "for any time t, the unique update is the one such that prev_publish_time < t <= publish_time.",
+              "",
+              "Note that there may not be such an update while we are migrating to the new message-sending logic,",
+              "as some price updates on pythnet may not be sent to other chains (because the message-sending",
+              "logic may not have triggered). We can solve this problem by making the message-sending mandatory",
+              "(which we can do once publishers have migrated over).",
+              "",
+              "Additionally, this field may be equal to publish_time if the message is sent on a slot where",
+              "where the aggregation was unsuccesful. This problem will go away once all publishers have",
+              "migrated over to a recent version of pyth-agent."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "ema_price",
+            "type": "i64"
+          },
+          {
+            "name": "ema_conf",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PriceUpdateV2",
+      "docs": [
+        "A price update account. This account is used by the Pyth Receiver program to store a verified price update from a Pyth price feed.",
+        "It contains:",
+        "- `write_authority`: The write authority for this account. This authority can close this account to reclaim rent or update the account to contain a different price update.",
+        "- `verification_level`: The [`VerificationLevel`] of this price update. This represents how many Wormhole guardian signatures have been verified for this price update.",
+        "- `price_message`: The actual price update.",
+        "- `posted_slot`: The slot at which this price update was posted."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "write_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "verification_level",
+            "type": {
+              "defined": {
+                "name": "VerificationLevel"
+              }
+            }
+          },
+          {
+            "name": "price_message",
+            "type": {
+              "defined": {
+                "name": "PriceFeedMessage"
+              }
+            }
+          },
+          {
+            "name": "posted_slot",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "balance",
+            "type": "u64"
+          },
+          {
+            "name": "positions",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "Position"
+                  }
+                },
+                3
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserSnapshot",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "balance",
+            "type": "u64"
+          },
+          {
+            "name": "position_status",
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "PositionStatus"
+                  }
+                },
+                3
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "VerificationLevel",
+      "docs": [
+        "Pyth price updates are bridged to all blockchains via Wormhole.",
+        "Using the price updates on another chain requires verifying the signatures of the Wormhole guardians.",
+        "The usual process is to check the signatures for two thirds of the total number of guardians, but this can be cumbersome on Solana because of the transaction size limits,",
+        "so we also allow for partial verification.",
+        "",
+        "This enum represents how much a price update has been verified:",
+        "- If `Full`, we have verified the signatures for two thirds of the current guardians.",
+        "- If `Partial`, only `num_signatures` guardian signatures have been checked.",
+        "",
+        "# Warning",
+        "Using partially verified price updates is dangerous, as it lowers the threshold of guardians that need to collude to produce a malicious price update."
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Partial",
+            "fields": [
+              {
+                "name": "num_signatures",
+                "type": "u8"
+              }
+            ]
+          },
+          {
+            "name": "Full"
+          }
+        ]
+      }
+    }
+  ]
+}
