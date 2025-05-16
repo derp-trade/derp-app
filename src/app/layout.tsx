@@ -1,16 +1,18 @@
+import { MarketProvider } from "@/components/market-provider";
 import SolanaProvider from "@/components/solana-provider";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Spline_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const geist = Geist({
   subsets: ["latin"],
+  variable: "--font-geist",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const splineSans = Spline_Sans({
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-spline"
 });
 
 export const metadata: Metadata = {
@@ -49,10 +51,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geist.variable} ${splineSans.variable} font-sans antialiased`}
       >
         <SolanaProvider>
-          {children}
+          <MarketProvider>
+            {children}
+          </MarketProvider>
         </SolanaProvider>
       </body>
     </html>

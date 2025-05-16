@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-stretch justify-center min-h-screen p-4 gap-2 font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col items-stretch justify-center min-h-screen p-4 gap-2">
       <Navbar />
 
       <MarketBar />
