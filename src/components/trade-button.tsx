@@ -1,7 +1,8 @@
 import { MarketId } from "@/lib/const";
 import { useWallet } from "@/lib/useDerpProgram";
 import { useClosePosition, useCreateUserAccount, useOpenPosition, useUserAccount } from "@/lib/useUser";
-import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+import { solanaDevnet } from "@reown/appkit/networks";
+import { useAppKit, useAppKitAccount, useAppKitNetwork } from "@reown/appkit/react";
 import BN from "bn.js";
 import { Button } from "./ui/button";
 
@@ -15,6 +16,7 @@ interface TradeButtonProps {
 export default function TradeButton({ type, marketId, size, leverage }: TradeButtonProps) {
   const { isReadOnly } = useWallet();
   const { isConnected } = useAppKitAccount({ namespace: "solana" });
+  const { chainId, switchNetwork } = useAppKitNetwork();
   const { open } = useAppKit();
   const { data: userAccount } = useUserAccount();
   const createAccount = useCreateUserAccount();
@@ -27,6 +29,17 @@ export default function TradeButton({ type, marketId, size, leverage }: TradeBut
     return (
       <Button className={className} onClick={() => open()}>
         Connect Wallet
+      </Button>
+    );
+  }
+
+  if (chainId !== "EtWTRABZaYq6iMfeYKouRu166VU2xqa1") {
+    return (
+      <Button
+        className={className}
+        onClick={() => switchNetwork(solanaDevnet)}
+      >
+        Switch to Solana Devnet
       </Button>
     );
   }
