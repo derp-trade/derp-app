@@ -60,7 +60,7 @@ export default function PositionsList() {
                     <td className="py-3">${liquidationMargin.toFixed(2)}</td>
                     <td className="py-3">
                       <div className={pnl >= 0 ? "text-[#AAFF00]" : "text-[#9C27FF]"}>
-                        ${pnl.toFixed(2)} ({(pnl / size).toFixed(2)}%)
+                        ${pnl.toFixed(2)} ({(pnl * position.leverage / size).toFixed(2)}%)
                       </div>
                     </td>
                     <td className="py-3 text-right">

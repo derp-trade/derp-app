@@ -1,6 +1,6 @@
 import { MarketId } from "@/lib/const";
 import { useWallet } from "@/lib/useDerpProgram";
-import { useCreateUserAccount, useOpenPosition, useUserAccount } from "@/lib/useUser";
+import { useClosePosition, useCreateUserAccount, useOpenPosition, useUserAccount } from "@/lib/useUser";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import BN from "bn.js";
 import { Button } from "./ui/button";
@@ -19,6 +19,7 @@ export default function TradeButton({ type, marketId, size, leverage }: TradeBut
   const { data: userAccount } = useUserAccount();
   const createAccount = useCreateUserAccount();
   const openPosition = useOpenPosition();
+  const closePosition = useClosePosition();
 
   const className = `w-full font-bold ${type === "long" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`;
 
@@ -49,6 +50,18 @@ export default function TradeButton({ type, marketId, size, leverage }: TradeBut
         disabled={createAccount.isPending}
       >
         {createAccount.isPending ? "Creating Account..." : "Create Account"}
+      </Button>
+    );
+  }
+
+  if (!userAccount.positions[marketId].size.eqn(0)) {
+    return (
+      <Button
+        className={className}
+        onClick={() => closePosition.mutate({ marketId })}
+        disabled={closePosition.isPending}
+      >
+        {closePosition.isPending ? "Closing Position..." : "Close Existing Position"}
       </Button>
     );
   }
