@@ -1,38 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-
-const positionsData = [
-  {
-    id: 1,
-    market: "SOL-PERP",
-    type: "long",
-    size: 0.75,
-    leverage: 5,
-    entryPrice: 140.25,
-    markPrice: 142.87,
-    liquidationPrice: 120.5,
-    pnl: 1.97,
-    pnlPercent: 1.4,
-  },
-  {
-    id: 2,
-    market: "BTC-PERP",
-    type: "short",
-    size: 0.02,
-    leverage: 10,
-    entryPrice: 68500,
-    markPrice: 67800,
-    liquidationPrice: 72300,
-    pnl: 14.0,
-    pnlPercent: 2.04,
-  },
-];
+import { MarketId, markets } from "@/lib/const";
+import { useUserStatus } from "@/lib/useUser";
+import { BN } from "bn.js";
 
 export default function PositionsList() {
+  const { data } = useUserStatus();
+
   return (
     <div className="max-h-48 min-h-48 overflow-y-auto">
-      {positionsData.length > 0 ? (
+      {data?.positionStatus ? (
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -41,45 +19,57 @@ export default function PositionsList() {
                 <th className="text-left pb-2">Size</th>
                 <th className="text-left pb-2">Entry Price</th>
                 <th className="text-left pb-2">Mark Price</th>
-                <th className="text-left pb-2">Liq. Price</th>
+                <th className="text-left pb-2">Liq. Margin</th>
                 <th className="text-left pb-2">PnL</th>
                 <th className="text-right pb-2">Close</th>
               </tr>
             </thead>
             <tbody>
-              {positionsData.map((position) => (
-                <tr key={position.id} className="border-b border-white/5 text-sm">
-                  <td className="py-3">
-                    <div className="flex items-center">
-                      <span
-                        className={`inline-block w-2 h-2 rounded-full mr-2 ${position.type === "long" ? "bg-[#AAFF00]" : "bg-[#9C27FF]"}`}
-                      ></span>
-                      {position.market}
-                    </div>
-                  </td>
-                  <td className="py-3">
-                    {position.size} ({position.leverage}x)
-                  </td>
-                  <td className="py-3">
-                    $
-                    {position.type === "long"
-                      ? position.entryPrice.toLocaleString()
-                      : position.entryPrice.toLocaleString()}
-                  </td>
-                  <td className="py-3">${position.markPrice.toLocaleString()}</td>
-                  <td className="py-3">${position.liquidationPrice.toLocaleString()}</td>
-                  <td className="py-3">
-                    <div className={position.pnl >= 0 ? "text-[#AAFF00]" : "text-[#9C27FF]"}>
-                      ${position.pnl.toFixed(2)} ({position.pnlPercent.toFixed(2)}%)
-                    </div>
-                  </td>
-                  <td className="py-3 text-right">
-                    <Button variant="outline" size="sm" className="h-7 text-xs border-white/20 hover:bg-white/10">
-                      Close
-                    </Button>
-                  </td>
-                </tr>
-              ))}
+              {data.positionStatus.map((position, idx) => {
+                if (position.size.isZero()) {
+                  return null;
+                }
+
+                const type = position.size.gt(new BN(0)) ? "long" : "short";
+                const size = position.size.abs().toNumber() / 1_000_000;
+                const markPrice = position.currentPriceAmm.toNumber() / 1_000_000;
+                const liquidationMargin = position.maintenanceMargin.toNumber() / 1_000_000;
+                const pnl = position.unrealizedPnl.toNumber() / 1_000_000;
+                const entryPrice = position.entryPrice.toNumber() / 1_000_000;
+
+                const market = markets[idx as MarketId];
+
+                return (
+                  <tr key={idx} className="border-b border-white/5 text-sm">
+                    <td className="py-3">
+                      <div className="flex items-center">
+                        <span
+                          className={`inline-block w-2 h-2 rounded-full mr-2 ${type === "long" ? "bg-[#AAFF00]" : "bg-[#9C27FF]"}`}
+                        ></span>
+                        {market.name}
+                      </div>
+                    </td>
+                    <td className="py-3">
+                      {size} {market.underlyingName} (??x)
+                    </td>
+                    <td className="py-3">
+                      ${entryPrice.toFixed(2)}
+                    </td>
+                    <td className="py-3">${markPrice.toFixed(2)}</td>
+                    <td className="py-3">${liquidationMargin.toFixed(2)}</td>
+                    <td className="py-3">
+                      <div className={pnl >= 0 ? "text-[#AAFF00]" : "text-[#9C27FF]"}>
+                        ${pnl.toFixed(2)} ({(pnl / size).toFixed(2)}%)
+                      </div>
+                    </td>
+                    <td className="py-3 text-right">
+                      <Button variant="outline" size="sm" className="h-7 text-xs border-white/20 hover:bg-white/10">
+                        Close
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

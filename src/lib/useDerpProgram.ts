@@ -23,6 +23,23 @@ interface MarketStatusResponse {
   }[];
 }
 
+interface UserStatusResponse {
+  balance: BN;
+  positionStatus: {
+    size: BN;
+    entryPrice: BN;
+    currentPriceOracle: BN;
+    currentPriceAmm: BN;
+    unrealizedPnl: BN;
+    initialMargin: BN;
+    maintenanceMargin: BN;
+    claimableValue: BN;
+    fundingIndex: BN;
+    fundingRate: BN;
+    lastFundingTime: BN;
+  }[];
+}
+
 export function useWallet(): {
   wallet: anchor.Wallet;
   isReadOnly: boolean;
@@ -151,9 +168,11 @@ export function useDerpFunctions() {
         })
         .view();
 
-      console.log("user status:", userStatus);
+        if (!userStatus) {
+          throw new Error("Failed to fetch user status");
+        }
 
-      return "";
+      return userStatus as UserStatusResponse;
     };
   }, [program, wallet, isReadOnly]);
 
@@ -176,11 +195,27 @@ export function useDerpFunctions() {
     };
   }, [program]);
 
+  const getUserAccount = useMemo(() => {
+    return async () => {
+      if (isReadOnly) {
+        throw new Error("Wallet not connected");
+      }
+
+      const [derpPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from('user-account'), wallet.publicKey.toBuffer()],   // <-- seeds in #[account]
+        program.programId,
+      );
+
+      return await program.account.userAccount.fetchNullable(derpPda);
+    };
+  }, [program, wallet, isReadOnly]);
+
   return {
     createUserAccount,
     openPosition,
     closePosition,
     getUserStatus,
     getMarketStatus,
+    getUserAccount,
   };
 }

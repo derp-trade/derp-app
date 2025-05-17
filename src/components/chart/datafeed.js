@@ -9,7 +9,6 @@ const lastBarsCache = new Map()
 
 const datafeed = {
   onReady: (callback) => {
-    console.log('[onReady]: Method call')
     fetch(`${API_ENDPOINT}/config`).then((response) => {
       response.json().then((configurationData) => {
         setTimeout(() => callback(configurationData))
@@ -17,7 +16,6 @@ const datafeed = {
     })
   },
   searchSymbols: (userInput, exchange, symbolType, onResultReadyCallback) => {
-    console.log('[searchSymbols]: Method call')
     fetch(`${API_ENDPOINT}/search?query=${userInput}`).then((response) => {
       response.json().then((data) => {
         onResultReadyCallback(data)
@@ -29,12 +27,10 @@ const datafeed = {
     onSymbolResolvedCallback,
     onResolveErrorCallback
   ) => {
-    console.log('[resolveSymbol]: Method call', symbolName)
     fetch(`${API_ENDPOINT}/symbols?symbol=${symbolName}`).then((response) => {
       response
         .json()
         .then((symbolInfo) => {
-          console.log('[resolveSymbol]: Symbol resolved', symbolInfo)
           onSymbolResolvedCallback(symbolInfo)
         })
         .catch(() => {
@@ -52,7 +48,6 @@ const datafeed = {
     onErrorCallback
   ) => {
     const { from, to, firstDataRequest } = periodParams
-    console.log('[getBars]: Method call', symbolInfo, resolution, from, to)
 
     const maxRangeInSeconds = 365 * 24 * 60 * 60 // 1 year in seconds
 
@@ -104,10 +99,6 @@ const datafeed = {
     subscriberUID,
     onResetCacheNeededCallback
   ) => {
-    console.log(
-      '[subscribeBars]: Method call with subscriberUID:',
-      subscriberUID
-    )
     subscribeOnStream(
       symbolInfo,
       resolution,
@@ -118,10 +109,6 @@ const datafeed = {
     )
   },
   unsubscribeBars: (subscriberUID) => {
-    console.log(
-      '[unsubscribeBars]: Method call with subscriberUID:',
-      subscriberUID
-    )
     unsubscribeFromStream(subscriberUID)
   },
 }

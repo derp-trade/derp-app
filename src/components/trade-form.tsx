@@ -1,9 +1,12 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { useMarketStatus } from "@/lib/useMarketStatus";
+import { useUserStatus } from "@/lib/useUser";
 import { useState } from "react";
+import { useMarket } from "./market-provider";
+import TradeButton from "./trade-button";
 
 interface TradeFormProps {
   type: "long" | "short";
@@ -13,14 +16,23 @@ export default function TradeForm({ type }: TradeFormProps) {
   const [size, setSize] = useState("0");
   const [leverage, setLeverage] = useState(5);
 
+  const { marketId } = useMarket();
+  const { data: userStatus } = useUserStatus();
+  const { data: marketStatus } = useMarketStatus();
+
+  const balance = userStatus?.balance ? (userStatus.balance.toNumber() / 1_000_000) : undefined;
+  const marketPrice = (marketStatus?.marketSnapshots?.[marketId].currentPriceAmm.toNumber() ?? 0) / 1_000_000;
+
+  const sizeNumber = Number.parseFloat(size || "0");
+  const sizeWithLeverage = sizeNumber * leverage;
+
   const maxLeverage = 10;
-  const balance = 1000;
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between text-sm">
         <span className="text-white/60">Available Balance</span>
-        <span>${balance.toFixed(2)} USDC</span>
+        {typeof balance === "number" ? <span>${balance.toFixed(2)} USD</span> : <></>}
       </div>
 
       <div className="space-y-2">
@@ -31,25 +43,25 @@ export default function TradeForm({ type }: TradeFormProps) {
           <div className="flex gap-2">
             <button
               className="text-xs px-1 border border-white/20 rounded hover:border-white/40"
-              onClick={() => setSize((balance * 0.25).toFixed(2))}
+              onClick={() => setSize(((balance ?? 0) * 0.25).toFixed(2))}
             >
               25%
             </button>
             <button
               className="text-xs px-1 border border-white/20 rounded hover:border-white/40"
-              onClick={() => setSize((balance * 0.5).toFixed(2))}
+              onClick={() => setSize(((balance ?? 0) * 0.5).toFixed(2))}
             >
               50%
             </button>
             <button
               className="text-xs px-1 border border-white/20 rounded hover:border-white/40"
-              onClick={() => setSize((balance * 0.75).toFixed(2))}
+              onClick={() => setSize(((balance ?? 0) * 0.75).toFixed(2))}
             >
               75%
             </button>
             <button
               className="text-xs px-1 border border-white/20 rounded hover:border-white/40"
-              onClick={() => setSize(balance.toFixed(2))}
+              onClick={() => setSize((balance ?? 0).toFixed(2))}
             >
               100%
             </button>
@@ -101,23 +113,24 @@ export default function TradeForm({ type }: TradeFormProps) {
       <div className="space-y-2 pt-2">
         <div className="flex justify-between text-sm">
           <span className="text-white/60">Position Size</span>
-          <span>${(Number.parseFloat(size || "0") * leverage).toFixed(2)}</span>
+          <span>${sizeWithLeverage.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-white/60">Entry Price</span>
-          <span>$Market</span>
+          <span>${marketPrice.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="text-white/60">Fees</span>
-          <span>${(Number.parseFloat(size || "0") * 0.0005).toFixed(2)}</span>
+          <span>${(sizeWithLeverage * 0.0005).toFixed(2)}</span>
         </div>
       </div>
 
-      <Button
-        className={`w-full font-bold ${type === "long" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`}
-      >
-        {type === "long" ? "Long" : "Short"} SOL
-      </Button>
+      <TradeButton
+        type={type}
+        leverage={leverage}
+        size={sizeNumber}
+        marketId={marketId}
+      />
     </div>
   );
 }
