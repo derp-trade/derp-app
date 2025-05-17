@@ -32,13 +32,13 @@ export default function TradeForm({ type }: TradeFormProps) {
     <div className="space-y-4">
       <div className="flex justify-between text-sm">
         <span className="text-white/60">Available Balance</span>
-        {typeof balance === "number" ? <span>${balance.toFixed(2)} USD</span> : <></>}
+        {typeof balance === "number" ? <span>${balance.toFixed(2)}</span> : <></>}
       </div>
 
       <div className="space-y-2">
         <div className="flex justify-between text-sm">
           <label htmlFor="size" className="text-white/60">
-            Size (USDC)
+            Size (USD)
           </label>
           <div className="flex gap-2">
             <button
@@ -128,7 +128,7 @@ export default function TradeForm({ type }: TradeFormProps) {
       <TradeButton
         type={type}
         leverage={leverage}
-        size={sizeNumber}
+        size={(sizeNumber / marketPrice) * 0.99}
         marketId={marketId}
       />
     </div>

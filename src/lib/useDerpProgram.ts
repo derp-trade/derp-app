@@ -37,6 +37,7 @@ interface UserStatusResponse {
     fundingIndex: BN;
     fundingRate: BN;
     lastFundingTime: BN;
+    leverage: number;
   }[];
 }
 
