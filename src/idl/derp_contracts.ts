@@ -707,6 +707,10 @@ export type DerpContracts = {
           {
             "name": "lastFundingTime",
             "type": "i64"
+          },
+          {
+            "name": "leverage",
+            "type": "u8"
           }
         ]
       }

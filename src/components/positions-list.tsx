@@ -51,7 +51,7 @@ export default function PositionsList() {
                       </div>
                     </td>
                     <td className="py-3">
-                      {size} {market.underlyingName} (??x)
+                      {size} {market.underlyingName} ({position.leverage}x)
                     </td>
                     <td className="py-3">
                       ${entryPrice.toFixed(2)}
