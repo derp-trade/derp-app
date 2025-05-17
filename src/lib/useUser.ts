@@ -9,8 +9,6 @@ export function useUserStatus() {
   const { isReadOnly } = useWallet();
   const { isConnected, address } = useAppKitAccount({ namespace: "solana" });
 
-  console.log("isReadOnly", isReadOnly, "isConnected", isConnected, "address", address);
-
   return useQuery({
     queryKey: ["userStatus", address],
     enabled: !isReadOnly && !!address && !!isConnected,
@@ -88,6 +86,32 @@ export function useOpenPosition() {
     },
     onError: (error) => {
       console.error("Error opening position:", error);
+    },
+  });
+}
+
+export function useClosePosition() {
+  const { closePosition } = useDerpFunctions();
+  const { isReadOnly } = useWallet();
+  const { address } = useAppKitAccount({ namespace: "solana" });
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["closePosition", address],
+    mutationFn: async ({ marketId }: { marketId: MarketId; }) => {
+      if (isReadOnly) {
+        throw new Error("Wallet not connected");
+      }
+
+      return closePosition(marketId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["userStatus", address],
+      });
+    },
+    onError: (error) => {
+      console.error("Error closing position:", error);
     },
   });
 }

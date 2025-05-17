@@ -2,15 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { MarketId, markets } from "@/lib/const";
-import { useUserStatus } from "@/lib/useUser";
+import { useClosePosition, useUserStatus } from "@/lib/useUser";
 import { BN } from "bn.js";
 
 export default function PositionsList() {
-  const { data } = useUserStatus();
+  const { data: userStatus } = useUserStatus();
+  const closePosition = useClosePosition();
 
   return (
     <div className="max-h-48 min-h-48 overflow-y-auto">
-      {data?.positionStatus ? (
+      {userStatus?.positionStatus ? (
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -25,7 +26,7 @@ export default function PositionsList() {
               </tr>
             </thead>
             <tbody>
-              {data.positionStatus.map((position, idx) => {
+              {userStatus.positionStatus.map((position, idx) => {
                 if (position.size.isZero()) {
                   return null;
                 }
@@ -63,7 +64,13 @@ export default function PositionsList() {
                       </div>
                     </td>
                     <td className="py-3 text-right">
-                      <Button variant="outline" size="sm" className="h-7 text-xs border-white/20 hover:bg-white/10">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-7 text-xs border-white/20 hover:bg-white/10"
+                        disabled={closePosition.isPending}
+                        onClick={() => closePosition.mutate({ marketId: market.id })}
+                      >
                         Close
                       </Button>
                     </td>
