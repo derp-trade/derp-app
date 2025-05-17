@@ -1,14 +1,14 @@
 "use client";
 
+import TradingViewChart from "@/components/chart/trading-view";
 import MarketBar from "@/components/market-bar";
+import MoreInfoCard from "@/components/more-info-card";
 import Navbar from "@/components/navbar";
 import PositionsList from "@/components/positions-list";
-import RecentTrades from "@/components/recent-trades";
-import TradeForm from "@/components/trade-form";
-import TradingViewChart from "@/components/chart/trading-view";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReadOnlyLock from "@/components/read-only-lock";
+import TradeForm from "@/components/trade-form";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Home() {
   return (
@@ -50,14 +50,7 @@ export default function Home() {
             <ReadOnlyLock />
           </Card>
 
-          <Card className="w-full flex-1 min-h-64">
-            <CardHeader>
-              <CardTitle>Recent Trades</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <RecentTrades />
-            </CardContent>
-          </Card>
+          <MoreInfoCard />
         </div>
       </div>
     </div>
