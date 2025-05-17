@@ -19,5 +19,5 @@ export const solanaWeb3JsAdapter = new SolanaAdapter({
 
 export const solanaConnection = new Connection(
 	"https://api.devnet.solana.com",
-	"finalized"
+	"processed"
 );
