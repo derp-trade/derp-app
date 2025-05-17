@@ -68,7 +68,7 @@ function startStreaming(retries = 3, delay = 3000) {
                   var jsonData = JSON.parse(trimmedDataString)
                   handleStreamingData(jsonData)
                 } catch (e) {
-                  console.log('Error parsing JSON:', e.message)
+                  void e;
                 }
               }
             })
