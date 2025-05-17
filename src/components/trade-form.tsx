@@ -13,7 +13,7 @@ export default function TradeForm({ type }: TradeFormProps) {
   const [size, setSize] = useState("0");
   const [leverage, setLeverage] = useState(5);
 
-  const maxLeverage = 20;
+  const maxLeverage = 10;
   const balance = 1000;
 
   return (

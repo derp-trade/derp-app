@@ -1,29 +1,23 @@
-import { AdapterBlueprint } from "@reown/appkit/adapters";
 import { useAppKitAccount, useAppKitBalance } from "@reown/appkit/react";
-import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export function useBalance() {
-  const lastFetched = useRef<number>(0);
-
   const { fetchBalance } = useAppKitBalance();
-  const [balance, setBalance] = useState<AdapterBlueprint.GetBalanceResult | undefined>(undefined);
-  const { isConnected } = useAppKitAccount({ namespace: "solana" });
+  const { isConnected, address } = useAppKitAccount({ namespace: "solana" });
 
-  useEffect(() => {
-    // fetch at most once per 30 seconds
-    if (lastFetched.current + 30 * 1000 > Date.now()) {
-      return;
-    }
-    lastFetched.current = Date.now();
+  const { data } = useQuery({
+    queryKey: ["balance", address],
+    enabled: !!address && !!isConnected,
+    queryFn: async () => {
+      const balance = await fetchBalance();
+      if (!balance.data) {
+        throw new Error("Failed to fetch balance");
+      }
 
-    if (isConnected) {
-      fetchBalance().then((result) => {
-        setBalance(result.data);
-      });
-    } else {
-      setBalance(undefined);
-    }
-  }, [isConnected, fetchBalance]);
+      return balance.data;
+    },
+    refetchInterval: 30 * 1000, // 30 seconds
+  });
 
-  return balance;
+  return data;
 }

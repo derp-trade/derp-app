@@ -17,10 +17,15 @@ export default function Navbar() {
       <nav className="px-2 flex flex-row items-center h-8">
         <Logo />
         <div className="flex flex-row items-center ml-auto gap-4">
-          {isReadOnly && (
+          {isReadOnly ? (
             <Button className="text-sm" variant="ghost">
               <span className="bg-red-500 rounded-full w-2 h-2 inline-block mr-1 mb-px" />
               Read-only mode
+            </Button>
+          ) : (
+            <Button className="text-sm" variant="ghost">
+              <span className="bg-green-500 rounded-full w-2 h-2 inline-block mr-1 mb-px" />
+              Live mode
             </Button>
           )}
 
