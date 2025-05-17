@@ -10,6 +10,7 @@ interface Market {
   id: number;
   name: string;
   underlyingName: string;
+  pythSymbol: string;
   pythAddress: anchor.web3.PublicKey;
   icon: StaticImageData;
 }
@@ -19,6 +20,7 @@ export const markets = [
     id: 0,
     name: "GOLD-DERP",
     underlyingName: "GOLD",
+    pythSymbol: "XAUUSD",
     pythAddress: new anchor.web3.PublicKey("2uPQGpm8X4ZkxMHxrAW1QuhXcse1AHEgPih6Xp9NuEWW"),
     icon: GoldIcon,
   },
@@ -26,6 +28,7 @@ export const markets = [
     id: 1,
     name: "SOL-DERP",
     underlyingName: "SOL",
+    pythSymbol: "SOLUSD",
     pythAddress: new anchor.web3.PublicKey("7UVimffxr9ow1uXYxsr4LHAcV58mLzhmwaeKvJ1pjLiE"),
     icon: SolIcon,
   },
@@ -33,6 +36,7 @@ export const markets = [
     id: 2,
     name: "FARTCOIN-DERP",
     underlyingName: "FARTCOIN",
+    pythSymbol: "FARTCOINUSD",
     pythAddress: new anchor.web3.PublicKey("2t8eUbYKjidMs3uSeYM9jXM9uudYZwGkSeTB4TKjmvnC"),
     icon: FartcoinIcon,
   },

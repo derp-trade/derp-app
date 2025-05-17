@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar";
 import PositionsList from "@/components/positions-list";
 import RecentTrades from "@/components/recent-trades";
 import TradeForm from "@/components/trade-form";
+import TradingViewChart from "@/components/chart/trading-view";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -17,7 +18,8 @@ export default function Home() {
 
       <div className="flex flex-1 flex-row justify-center items-stretch gap-2">
         <div className="flex-1 flex flex-col items-center justify-center gap-2">
-          <Card className="w-full min-h-128 flex-1">
+          <Card className="w-full min-h-128 flex-1 py-0 overflow-hidden">
+            <TradingViewChart />
           </Card>
 
           <Card className="w-full">
