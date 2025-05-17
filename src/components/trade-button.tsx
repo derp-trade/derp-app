@@ -23,7 +23,7 @@ export default function TradeButton({ type, marketId, size, leverage }: TradeBut
   const openPosition = useOpenPosition();
   const closePosition = useClosePosition();
 
-  const className = `w-full font-bold ${type === "long" ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"}`;
+  const className = `w-full font-bold ${type === "long" ? "bg-primary hover:bg-primary/90 text-primary-foreground" : "bg-secondary hover:bg-secondary/80 text-secondary-foreground"}`;
 
   if (!isConnected) {
     return (

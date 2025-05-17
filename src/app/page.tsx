@@ -5,7 +5,6 @@ import MarketBar from "@/components/market-bar";
 import MoreInfoCard from "@/components/more-info-card";
 import Navbar from "@/components/navbar";
 import PositionsList from "@/components/positions-list";
-import ReadOnlyLock from "@/components/read-only-lock";
 import TradeForm from "@/components/trade-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -51,8 +50,6 @@ export default function Home() {
                 </TabsContent>
               </Tabs>
             </CardContent>
-
-            <ReadOnlyLock />
           </Card>
 
           <MoreInfoCard />
