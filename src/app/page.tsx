@@ -8,6 +8,7 @@ import TradeForm from "@/components/trade-form";
 import TradingViewChart from "@/components/chart/trading-view";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ReadOnlyLock from "@/components/read-only-lock";
 
 export default function Home() {
   return (
@@ -30,7 +31,7 @@ export default function Home() {
         </div>
 
         <div className="w-96 flex flex-col items-stretch justify-center gap-2">
-          <Card className="w-full py-4">
+          <Card className="w-full py-4 relative">
             <CardContent className="px-4">
               <Tabs defaultValue="long" className="w-full">
                 <TabsList className="w-full mb-2">
@@ -45,6 +46,8 @@ export default function Home() {
                 </TabsContent>
               </Tabs>
             </CardContent>
+
+            <ReadOnlyLock />
           </Card>
 
           <Card className="w-full flex-1 min-h-64">

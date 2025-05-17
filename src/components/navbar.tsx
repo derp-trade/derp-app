@@ -3,8 +3,9 @@
 import { shortenIfAddress } from "@/lib/pretty";
 import { useWallet } from "@/lib/useDerpProgram";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
-import { Button } from "./ui/button";
+import { Link2 } from "lucide-react";
 import { Logo } from "./logo";
+import { Button } from "./ui/button";
 
 export default function Navbar() {
   const { open } = useAppKit();
@@ -29,7 +30,7 @@ export default function Navbar() {
             </Button>
           ) : (
             <Button size="sm" onClick={() => open()}>
-              Connect Wallet
+              <Link2 /> Connect Wallet
             </Button>
           )}
         </div>
