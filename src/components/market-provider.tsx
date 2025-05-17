@@ -11,7 +11,7 @@ interface MarketContextType {
 const MarketContext = createContext<MarketContextType | undefined>(undefined);
 
 export function MarketProvider({ children }: { children?: ReactNode; }) {
-  const [marketId, setMarketId] = useState<MarketId>(0);
+  const [marketId, setMarketId] = useState<MarketId>(1);
 
   return (
     <MarketContext.Provider value={{ marketId, setMarketId }}>
