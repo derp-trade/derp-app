@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import BN from "bn.js";
 import { MarketId } from "./const";
 import { useDerpFunctions, useWallet } from "./useDerpProgram";
+import { sleep } from "./sleep";
 
 export function useUserStatus() {
   const { getUserStatus } = useDerpFunctions();
@@ -77,11 +78,21 @@ export function useOpenPosition() {
         throw new Error("Wallet not connected");
       }
 
-      return openPosition(marketId, size, leverage);
+      return openPosition(marketId, size, leverage)
+        .then(async (r) => {
+          await sleep(1000);
+          return r;
+        });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["userStatus", address],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["marketStatus"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["userAccount", address],
       });
     },
     onError: (error) => {
@@ -103,11 +114,21 @@ export function useClosePosition() {
         throw new Error("Wallet not connected");
       }
 
-      return closePosition(marketId);
+      return closePosition(marketId)
+        .then(async (r) => {
+          await sleep(1000);
+          return r;
+        });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["userStatus", address],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["marketStatus"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["userAccount", address],
       });
     },
     onError: (error) => {
