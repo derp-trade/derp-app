@@ -1,4 +1,4 @@
-import { MarketId } from "@/lib/const";
+import { MarketId, markets } from "@/lib/const";
 import { useWallet } from "@/lib/useDerpProgram";
 import { useClosePosition, useCreateUserAccount, useOpenPosition, useUserAccount } from "@/lib/useUser";
 import { solanaDevnet } from "@reown/appkit/networks";
@@ -96,7 +96,7 @@ export default function TradeButton({ type, marketId, size, leverage }: TradeBut
       }}
       disabled={openPosition.isPending}
     >
-      {openPosition.isPending ? "Placing Order..." : `${type === "long" ? "Long" : "Short"} SOL`}
+      {openPosition.isPending ? "Placing Order..." : `${type === "long" ? "Long" : "Short"} ${markets[marketId].underlyingName}`}
     </Button>
 
   );
