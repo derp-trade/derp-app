@@ -2,8 +2,10 @@
 
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { useWallet } from "@/lib/useDerpProgram";
 import { useMarketStatus } from "@/lib/useMarketStatus";
-import { useUserStatus } from "@/lib/useUser";
+import { useUserAccount, useUserStatus } from "@/lib/useUser";
+import { useAppKitAccount } from "@reown/appkit/react";
 import { useState } from "react";
 import { useMarket } from "./market-provider";
 import TradeButton from "./trade-button";
@@ -16,8 +18,12 @@ export default function TradeForm({ type }: TradeFormProps) {
   const [size, setSize] = useState("0");
   const [leverage, setLeverage] = useState(5);
 
+  const { isConnected } = useAppKitAccount({ namespace: "solana" });
+  const { isReadOnly } = useWallet();
+
   const { marketId } = useMarket();
   const { data: userStatus } = useUserStatus();
+  const { data: userAccount } = useUserAccount();
   const { data: marketStatus } = useMarketStatus();
 
   const balance = userStatus?.balance ? (userStatus.balance.toNumber() / 1_000_000) : undefined;
@@ -32,7 +38,31 @@ export default function TradeForm({ type }: TradeFormProps) {
     <div className="space-y-4">
       <div className="flex justify-between text-sm">
         <span className="text-white/60">Available Balance</span>
-        {typeof balance === "number" ? <span>${balance.toFixed(2)}</span> : <></>}
+        {typeof balance === "number" ? (
+          <span>${balance.toFixed(2)}</span>
+        ) : (
+          isConnected ? (
+            isReadOnly ? (
+              <span className="text-white/40">
+                Fund wallet first
+              </span>
+            ) : (
+              userAccount ? (
+                <span className="text-white/40">
+                  Loading...
+                </span>
+              ) : (
+                <span className="text-white/40">
+                  Create user account first
+                </span>
+              )
+            )
+          ) : (
+            <span className="text-white/40">
+              Connect wallet first
+            </span>
+          )
+        )}
       </div>
 
       <div className="space-y-2">
@@ -131,6 +161,16 @@ export default function TradeForm({ type }: TradeFormProps) {
         size={(sizeNumber / marketPrice) * 0.99}
         marketId={marketId}
       />
+
+      {typeof balance !== "number" && (
+        <div className="border border-white/20 rounded-lg p-4">
+          You will get $10000 in free balance to trade with when open an account.
+          <br />
+          <span className="text-white/60">
+            Note: This is a demo version. You can only trade on the Solana Devnet.
+          </span>
+        </div>
+      )}
     </div>
   );
 }
